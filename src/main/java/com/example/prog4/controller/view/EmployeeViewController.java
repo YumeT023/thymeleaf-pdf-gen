@@ -8,6 +8,10 @@ import com.example.prog4.service.EmployeeService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/employee")
 @AllArgsConstructor
 public class EmployeeViewController extends PopulateController {
-    private EmployeeService employeeService;
-    private EmployeeMapper employeeMapper;
+    private final EmployeeService service;
+    private final EmployeeMapper mapper;
+    private static final String PDF_FILENAME_FORMAT = "employee(%s).pdf";
 
     @GetMapping("/list")
     public String getAll(
@@ -28,7 +33,7 @@ public class EmployeeViewController extends PopulateController {
             Model model,
             HttpSession session
     ) {
-        model.addAttribute("employees", employeeService.getAll(filters).stream().map(employeeMapper::toView).toList())
+        model.addAttribute("employees", service.getAll(filters).stream().map(mapper::toView).toList())
                 .addAttribute("employeeFilters", filters)
                 .addAttribute("directions", Sort.Direction.values());
         session.setAttribute("employeeFiltersSession", filters);
@@ -44,7 +49,7 @@ public class EmployeeViewController extends PopulateController {
 
     @GetMapping("/edit/{eId}")
     public String editEmployee(@PathVariable String eId, Model model) {
-        Employee toEdit = employeeMapper.toView(employeeService.getOne(eId));
+        Employee toEdit = mapper.toView(service.getOne(eId));
         model.addAttribute("employee", toEdit);
 
         return "employee_edition";
@@ -52,7 +57,7 @@ public class EmployeeViewController extends PopulateController {
 
     @GetMapping("/show/{eId}")
     public String showEmployee(@PathVariable String eId, Model model) {
-        Employee toShow = employeeMapper.toView(employeeService.getOne(eId));
+        Employee toShow = mapper.toView(service.getOne(eId));
         model.addAttribute("employee", toShow);
 
         return "employee_show";
