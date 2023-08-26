@@ -82,6 +82,7 @@ public class EmployeeMapper {
                 .monthlySalary(Objects.requireNonNullElse(employee.getMonthlySalary(), BigDecimal.valueOf(0)))
                 .address(employee.getAddress())
                 .cin(employee.getCin())
+                .age(employee.getAge())
                 .cnaps(employee.getCnaps())
                 .registrationNumber(employee.getRegistrationNumber())
                 .childrenNumber(employee.getChildrenNumber())

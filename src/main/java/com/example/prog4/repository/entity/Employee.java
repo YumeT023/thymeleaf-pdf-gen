@@ -12,7 +12,9 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.math.BigDecimal;
+import java.time.Period;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +28,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static java.time.LocalDate.now;
 
 @Data
 @Entity
@@ -40,6 +43,9 @@ public class Employee implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private String id;
     private String cin;
+
+    @Transient
+    private int age;
 
     private BigDecimal monthlySalary;
     private String cnaps;
@@ -74,4 +80,8 @@ public class Employee implements Serializable {
     @OneToMany
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private List<Phone> phones;
+
+    public int getAge() {
+        return Period.between(birthDate, now()).getYears();
+    }
 }

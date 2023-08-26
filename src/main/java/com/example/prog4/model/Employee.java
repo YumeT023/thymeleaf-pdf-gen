@@ -25,6 +25,7 @@ public class Employee implements Serializable {
     private String lastName;
 
     private BigDecimal monthlySalary;
+    private int age;
     private MultipartFile image;
     private String stringImage;
 
