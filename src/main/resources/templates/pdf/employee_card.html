@@ -107,31 +107,31 @@
         <div class="em-info__content">
             <div class="em-info__section">
                 <strong>Numéro matricule</strong>
-                : idk
+                : <span th:text="${employee.registrationNumber}"></span>
             </div>
             <div class="em-info__section">
                 <strong class="em-info__section-field">Noms</strong>
-                : id
+                : <span th:text="${employee.lastName}"></span>
             </div>
             <div class="em-info__section">
                 <strong class="em-info__section-field">Prénoms</strong>
-                : idk
+                : <span th:text="${employee.firstName}"></span>
             </div>
             <div class="em-info__section">
                 <strong class="em-info__section-field">Âge</strong>
-                : idk
+<!--                : <span th:text="2"></span>-->
             </div>
             <div class="em-info__section">
                 <strong class="em-info__section-field">Date d'embauche</strong>
-                : idk
+                : <span th:text="${employee.birthDate}"></span>
             </div>
             <div class="em-info__section">
                 <strong class="em-info__section-field">Date de départ</strong>
-                : idk
+                : <span th:text="${employee.entranceDate}"></span>
             </div>
             <div class="em-info__section">
                 <strong class="em-info__section-field">Numéro CNAPS</strong>
-                : idk
+                : <span th:text="${employee.departureDate}"></span>
             </div>
         </div>
     </div>
@@ -151,21 +151,16 @@
 <footer class="company">
     <img alt="" class="company-logo" src="/assets/illustration-1.svg"/>
     <table class="company-info">
-        <thead>
-        <tr>
-            <th>Nom de l'entreprise</th>
-            <th>Adresse de l'entreprise</th>
-        </tr>
-        </thead>
-
         <tbody>
         <tr>
-            <td>NIF : XXX</td>
-            <td>Numéro Téléphone</td>
+            <td th:text="${companyConf.name}"></td>
+            <td>NIF : <span th:text="${companyConf.taxIdentity.nif}"></span></td>
+            <td>Numéro Téléphone : <span th:each="p : ${companyConf.phones}"> <span th:text="${p.value} + ','"></span> </span></td>
         </tr>
         <tr>
-            <td>STAT : XXX</td>
-            <td>Email</td>
+            <td th:text="${companyConf.address}"></td>
+            <td>STAT : <span th:text="${companyConf.taxIdentity.stat}"></span></td>
+            <td>Email: <span th:text="${companyConf.email}"></span></td>
         </tr>
         </tbody>
     </table>
