@@ -17,6 +17,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.prog4.model.Employee.IMG_PLACEHOLDER;
+
 @Component
 @AllArgsConstructor
 @Transactional
@@ -89,7 +91,7 @@ public class EmployeeMapper {
                 // enums
                 .csp(employee.getCsp())
                 .sex(employee.getSex())
-                .stringImage(employee.getImage())
+                .stringImage(employee.getImage() != null ? employee.getImage() : IMG_PLACEHOLDER)
                 // emails
                 .professionalEmail(employee.getProfessionalEmail())
                 .personalEmail(employee.getPersonalEmail())
