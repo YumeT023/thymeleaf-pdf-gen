@@ -63,6 +63,16 @@ public class EmployeeViewController extends PopulateController {
         return "employee_show";
     }
 
+    @GetMapping("/show/{eId}/pdf")
+    public ResponseEntity<byte[]> getEmployeePdf(@PathVariable String eId) {
+        var pdf = service.buildInfoPdf(service.getOne(eId));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        headers.setContentDispositionFormData("attachment", PDF_FILENAME_FORMAT.formatted(eId));
+        headers.setContentLength(pdf.length);
+        return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+    }
+
     @GetMapping("/")
     public String home() {
         return "redirect:/employee/list";
