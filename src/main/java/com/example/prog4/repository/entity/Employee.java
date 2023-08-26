@@ -12,6 +12,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +40,8 @@ public class Employee implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private String id;
     private String cin;
+
+    private BigDecimal monthlySalary;
     private String cnaps;
     private String image;
     private String address;

@@ -6,6 +6,8 @@ import com.example.prog4.repository.PositionRepository;
 import com.example.prog4.repository.entity.Phone;
 import com.example.prog4.repository.entity.Position;
 import jakarta.transaction.Transactional;
+import java.math.BigDecimal;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +42,7 @@ public class EmployeeMapper {
                     .id(employee.getId())
                     .firstName(employee.getFirstName())
                     .lastName(employee.getLastName())
+                    .monthlySalary(Objects.requireNonNullElse(employee.getMonthlySalary(), BigDecimal.valueOf(0)))
                     .address(employee.getAddress())
                     .cin(employee.getCin())
                     .cnaps(employee.getCnaps())
@@ -76,6 +79,7 @@ public class EmployeeMapper {
                 .id(employee.getId())
                 .firstName(employee.getFirstName())
                 .lastName(employee.getLastName())
+                .monthlySalary(Objects.requireNonNullElse(employee.getMonthlySalary(), BigDecimal.valueOf(0)))
                 .address(employee.getAddress())
                 .cin(employee.getCin())
                 .cnaps(employee.getCnaps())
