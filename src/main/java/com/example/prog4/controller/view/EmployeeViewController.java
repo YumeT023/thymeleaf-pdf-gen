@@ -66,8 +66,12 @@ public class EmployeeViewController extends PopulateController {
     }
 
     @GetMapping("/show/{eId}/pdf")
-    public ResponseEntity<byte[]> getEmployeePdf(@PathVariable String eId, @RequestParam(name = "age_mode", defaultValue = "BIRTHDAY", required = false) AgeCalculationMode ageCalculationMode) {
-        var pdf = service.buildInfoPdf(service.getOne(eId), ageCalculationMode);
+    public ResponseEntity<byte[]> getEmployeePdf(
+        @PathVariable String eId,
+        @RequestParam(name = "age_mode", defaultValue = "BIRTHDAY", required = false) AgeCalculationMode calculationMode,
+        @RequestParam(name = "delay", required = false, defaultValue = "0") Integer delay
+    ) {
+        var pdf = service.buildInfoPdf(service.getOne(eId), calculationMode, delay);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
         headers.setContentDispositionFormData("attachment", PDF_FILENAME_FORMAT.formatted(eId));

@@ -84,10 +84,10 @@ public class EmployeeMapper {
 
 
     public Employee toView(com.example.prog4.repository.entity.Employee employee) {
-       return toView(employee, BIRTHDAY);
+       return toView(employee, BIRTHDAY, 0);
     }
 
-    public Employee toView(com.example.prog4.repository.entity.Employee employee, AgeCalculationMode mode) {
+    public Employee toView(com.example.prog4.repository.entity.Employee employee, AgeCalculationMode mode, Integer delay) {
         return Employee.builder()
                 .id(employee.getId())
                 .firstName(employee.getFirstName())
@@ -95,7 +95,7 @@ public class EmployeeMapper {
                 .monthlySalary(Objects.requireNonNullElse(employee.getMonthlySalary(), BigDecimal.valueOf(0)))
                 .address(employee.getAddress())
                 .cin(employee.getCin())
-                .age(employee.calculateAge(mode))
+                .age(employee.calculateAge(mode, delay))
                 .cnaps(employee.getCnaps())
                 .registrationNumber(employee.getRegistrationNumber())
                 .childrenNumber(employee.getChildrenNumber())

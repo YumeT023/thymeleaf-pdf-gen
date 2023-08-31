@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import java.math.BigDecimal;
 import java.time.Period;
+import java.time.temporal.TemporalUnit;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -84,12 +85,12 @@ public class Employee implements Serializable {
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private List<Phone> phones;
 
-    public int calculateAge(AgeCalculationMode mode) {
+    public int calculateAge(AgeCalculationMode mode, Integer delay) {
         var now = LocalDate.now();
         return switch (mode) {
             case BIRTHDAY -> Period.between(birthDate, now).getYears();
             case YEAR_ONLY -> now.getYear() - birthDate.getYear();
-            default -> throw new NotImplementedException("CUSTOM_YEAR not implemented");
+            default -> Period.between(birthDate.minusDays(delay), now).getYears();
         };
     }
 }

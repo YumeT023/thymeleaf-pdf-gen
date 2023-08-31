@@ -50,9 +50,9 @@ public class EmployeeService {
         repository.save(employee);
     }
 
-    public byte[] buildInfoPdf(Employee employee, AgeCalculationMode calculationMode) {
+    public byte[] buildInfoPdf(Employee employee, AgeCalculationMode calculationMode, Integer delay) {
         return pdfService.generatePdfFromTemplate(EMPLOYEE_HTML_TEMPLATE, Map.of(
-          "employee", mapper.toView(employee, calculationMode),
+          "employee", mapper.toView(employee, calculationMode, delay),
           "companyConf", new CompanyConf()
         ));
     }
