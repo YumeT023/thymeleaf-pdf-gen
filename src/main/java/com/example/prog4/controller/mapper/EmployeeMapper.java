@@ -1,14 +1,18 @@
 package com.example.prog4.controller.mapper;
 
+import com.example.prog4.controller.mapper.PhoneMapper;
 import com.example.prog4.model.Employee;
+import com.example.prog4.model.enums.AgeCalculationMode;
 import com.example.prog4.model.exception.BadRequestException;
 import com.example.prog4.repository.PositionRepository;
 import com.example.prog4.repository.entity.Phone;
 import com.example.prog4.repository.entity.Position;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,10 +22,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.prog4.model.Employee.IMG_PLACEHOLDER;
+import static com.example.prog4.model.enums.AgeCalculationMode.BIRTHDAY;
 
 @Component
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class EmployeeMapper {
     private PositionRepository positionRepository;
     private PhoneMapper phoneMapper;
@@ -76,7 +82,12 @@ public class EmployeeMapper {
         }
     }
 
+
     public Employee toView(com.example.prog4.repository.entity.Employee employee) {
+       return toView(employee, BIRTHDAY);
+    }
+
+    public Employee toView(com.example.prog4.repository.entity.Employee employee, AgeCalculationMode mode) {
         return Employee.builder()
                 .id(employee.getId())
                 .firstName(employee.getFirstName())
@@ -84,7 +95,7 @@ public class EmployeeMapper {
                 .monthlySalary(Objects.requireNonNullElse(employee.getMonthlySalary(), BigDecimal.valueOf(0)))
                 .address(employee.getAddress())
                 .cin(employee.getCin())
-                .age(employee.getAge())
+                .age(employee.calculateAge(mode))
                 .cnaps(employee.getCnaps())
                 .registrationNumber(employee.getRegistrationNumber())
                 .childrenNumber(employee.getChildrenNumber())

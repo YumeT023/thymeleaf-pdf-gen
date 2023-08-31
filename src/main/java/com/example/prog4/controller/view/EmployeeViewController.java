@@ -4,6 +4,7 @@ import com.example.prog4.controller.PopulateController;
 import com.example.prog4.controller.mapper.EmployeeMapper;
 import com.example.prog4.model.Employee;
 import com.example.prog4.model.EmployeeFilter;
+import com.example.prog4.model.enums.AgeCalculationMode;
 import com.example.prog4.service.EmployeeService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/employee")
@@ -64,8 +66,8 @@ public class EmployeeViewController extends PopulateController {
     }
 
     @GetMapping("/show/{eId}/pdf")
-    public ResponseEntity<byte[]> getEmployeePdf(@PathVariable String eId) {
-        var pdf = service.buildInfoPdf(service.getOne(eId));
+    public ResponseEntity<byte[]> getEmployeePdf(@PathVariable String eId, @RequestParam(name = "age_mode", defaultValue = "BIRTHDAY", required = false) AgeCalculationMode ageCalculationMode) {
+        var pdf = service.buildInfoPdf(service.getOne(eId), ageCalculationMode);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
         headers.setContentDispositionFormData("attachment", PDF_FILENAME_FORMAT.formatted(eId));

@@ -1,5 +1,6 @@
 package com.example.prog4.repository.entity;
 
+import com.example.prog4.model.enums.AgeCalculationMode;
 import com.example.prog4.repository.entity.enums.Csp;
 import com.example.prog4.repository.entity.enums.Sex;
 import jakarta.persistence.Entity;
@@ -21,6 +22,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.annotations.ColumnTransformer;
 
 import java.io.Serializable;
@@ -28,7 +31,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
-import static java.time.LocalDate.now;
 
 @Data
 @Entity
@@ -38,6 +40,7 @@ import static java.time.LocalDate.now;
 @EqualsAndHashCode
 @AllArgsConstructor
 @Table(name = "\"employee\"")
+@Slf4j
 public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -81,7 +84,12 @@ public class Employee implements Serializable {
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private List<Phone> phones;
 
-    public int getAge() {
-        return Period.between(birthDate, now()).getYears();
+    public int calculateAge(AgeCalculationMode mode) {
+        var now = LocalDate.now();
+        return switch (mode) {
+            case BIRTHDAY -> Period.between(birthDate, now).getYears();
+            case YEAR_ONLY -> now.getYear() - birthDate.getYear();
+            default -> throw new NotImplementedException("CUSTOM_YEAR not implemented");
+        };
     }
 }

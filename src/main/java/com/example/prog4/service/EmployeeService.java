@@ -3,6 +3,7 @@ package com.example.prog4.service;
 import com.example.prog4.config.CompanyConf;
 import com.example.prog4.controller.mapper.EmployeeMapper;
 import com.example.prog4.model.EmployeeFilter;
+import com.example.prog4.model.enums.AgeCalculationMode;
 import com.example.prog4.model.exception.NotFoundException;
 import com.example.prog4.repository.EmployeeRepository;
 import com.example.prog4.repository.dao.EmployeeManagerDao;
@@ -49,9 +50,9 @@ public class EmployeeService {
         repository.save(employee);
     }
 
-    public byte[] buildInfoPdf(Employee employee) {
+    public byte[] buildInfoPdf(Employee employee, AgeCalculationMode calculationMode) {
         return pdfService.generatePdfFromTemplate(EMPLOYEE_HTML_TEMPLATE, Map.of(
-          "employee", mapper.toView(employee),
+          "employee", mapper.toView(employee, calculationMode),
           "companyConf", new CompanyConf()
         ));
     }
